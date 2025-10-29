@@ -1,0 +1,59 @@
+.table-wrapper {
+    overflow-x: auto; 
+    position: relative; 
+  }
+  
+  .tg {
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0 auto;
+    width: 80%;
+  }
+  
+  .tg .tg-0pky {
+    border-color: inherit;
+    text-align: center;
+    vertical-align: top;
+    padding: 0.5rem;
+  }
+  
+  
+  .tg td {
+    background-color:#ffffff; ;
+    border-color:  #b5b7ba;
+    text-align: center;
+    padding: 0.6rem 2rem;
+  }
+  
+  .tg th {
+    background-color: #3085cf;
+    color: #fff;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0px 20px;
+    word-break: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    margin: auto;
+  }
+  
+  .tg th a {
+    background-color: #3085cf;;
+    color: #fff;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    overflow: hidden;
+    padding: 0px 20px;
+    word-break: normal;
+    font-weight: bold;
+    vertical-align: middle;
+    text-align: center;
+    white-space: nowrap;
+    margin: auto;
+  }
+  
+  

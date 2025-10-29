@@ -1,0 +1,8 @@
+onnxruntime
+phonemizer
+torch
+unidecode
+gradio
+soundfile
+huggingface_hub[cli]
+aina-gradio-theme==2.3
