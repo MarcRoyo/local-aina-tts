@@ -1,0 +1,13 @@
+services:
+  tts:
+    build:
+      context: ./services/tts
+      dockerfile: Dockerfile
+    volumes:
+      - tts-data:/home/user/app/data
+    ports:
+      - "7860:7860"
+
+volumes:
+  tts-data:
+    external: true
