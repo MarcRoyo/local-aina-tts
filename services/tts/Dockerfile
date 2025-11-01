@@ -29,6 +29,8 @@ RUN useradd -m -u 1000 user
 
 USER user
 
+RUN mkdir -p /home/user/app/data
+
 ENV HOME=/home/user \
 	PATH=/home/user/.local/bin:$PATH
 

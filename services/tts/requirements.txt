@@ -1,8 +1,8 @@
-onnxruntime
-phonemizer
-torch
-unidecode
-gradio
-soundfile
-huggingface_hub[cli]
+onnxruntime==1.23.2
+phonemizer==3.3.0
+torch==2.9.0
+unidecode==1.4.0
+gradio==5.49.1
+soundfile==0.13.1
+huggingface_hub==0.36.0
 aina-gradio-theme==2.3

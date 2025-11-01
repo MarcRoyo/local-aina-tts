@@ -68,3 +68,7 @@ docker build .
 docker run -p 7860:7860 --gpus=all 33c08f7c6fff
 ```
 despres obrir el browser i posar: http://localhost:7860/
+
+
+docker volume create --opt type=none --opt o=bind --opt device=./data/tts data-tts
+docker volume create --opt type=none --opt o=bind --opt device="C:\root\code\github.com\MarcRoyo\local-aina-tts\data\tts" data-tts
