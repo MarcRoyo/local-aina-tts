@@ -15,6 +15,13 @@ import random
 
 from AinaTheme import theme
 
+from fastapi import FastAPI
+from pydantic import BaseModel
+import threading
+import uvicorn
+
+
+
 DEFAULT_SPEAKER_ID = os.environ.get("DEFAULT_SPEAKER_ID", default="quim")
 DEFAULT_ACCENT= os.environ.get("DEFAULT_ACCENT", default="balear")
 
@@ -190,10 +197,11 @@ def tts(text:str, accent:str, spk_name:str, temperature:float, length_scale:floa
         vocos_infer_secs = perf_counter() - vocos_t0
         print("Vocos inference time", vocos_infer_secs)
 
-        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False, dir="/home/user/app") as fp_matcha_vocos:
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False, dir="/home/user/app/data") as fp_matcha_vocos:
             sf.write(fp_matcha_vocos.name, wavs_vocos.squeeze(0), 22050, "PCM_24")
 
         print(f"RTF matcha + vocos { (mel_infer_secs + vocos_infer_secs) / (wavs_vocos.shape[1]/22050) }")
+        print(f"Output file:{fp_matcha_vocos.name}")
         return fp_matcha_vocos.name
 
 
@@ -290,6 +298,33 @@ informacio_tab = gr.Blocks()
 with informacio_tab:
     gr.Markdown(informacio)
 demo = gr.Blocks(theme=theme, css="./styles.css")
+
+# --- FastAPI app to run in a separate thread ---
+app = FastAPI(title="local-aina-tts")
+
+class SynthesizeRequest(BaseModel):
+    text: str
+    accent: str = DEFAULT_ACCENT
+    spk_name: str = DEFAULT_SPEAKER_ID
+    temperature: float = 0.2
+    length_scale: float = 0.89
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
+
+@app.post("/synthesize")
+async def synthesize(req: SynthesizeRequest):
+    # call existing tts() which returns a filepath
+    out_path = tts(req.text, req.accent, req.spk_name, req.temperature, req.length_scale)
+    return out_path
+
+def _run_api():
+    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
+
+# start FastAPI in a daemon thread so Gradio can run in foreground
+api_thread = threading.Thread(target=_run_api, daemon=True)
+api_thread.start()
 
 with demo:
     gr.Markdown(title)

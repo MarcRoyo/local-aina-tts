@@ -7,6 +7,7 @@ services:
       - data-tts:/home/user/app/data
     ports:
       - "7860:7860"
+      - "8000:8000"
     deploy:
       resources:
         reservations:

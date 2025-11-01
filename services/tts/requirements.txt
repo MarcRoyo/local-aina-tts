@@ -6,3 +6,6 @@ gradio==5.49.1
 soundfile==0.13.1
 huggingface_hub==0.36.0
 aina-gradio-theme==2.3
+fastapi
+pydantic
+uvicorn

@@ -72,3 +72,17 @@ despres obrir el browser i posar: http://localhost:7860/
 
 docker volume create --opt type=none --opt o=bind --opt device=./data/tts data-tts
 docker volume create --opt type=none --opt o=bind --opt device="C:\root\code\github.com\MarcRoyo\local-aina-tts\data\tts" data-tts
+
+docker exec -it 04eaa0b6f23f bash
+
+docker compose ps
+
+docker cp "C:\root\code\github.com\MarcRoyo\local-aina-tts\services\tts\infer_onnx.py" 04eaa0b6f23f:/home/user/app/infer_onnx.py
+
+docker exec -u root 04eaa0b6f23f chown user:user /home/user/app/infer_onnx.py
+
+docker cp "C:\root\code\github.com\MarcRoyo\local-aina-tts\services\tts\requirements.txt" 04eaa0b6f23f:/home/user/app/requirements.txt
+
+docker exec -u user 04eaa0b6f23f pip install -r requirements.txt
+
+docker restart 04eaa0b6f23f
