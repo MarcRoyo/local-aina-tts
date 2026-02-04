@@ -15,11 +15,14 @@ def synthesize(text, url=DEFAULT_URL, accent=None, spk_name=None,
     }
     resp = requests.post(url, json=payload, timeout=timeout, stream=True)
     if resp.status_code == 200:
-        # with open(out, "wb") as f:
-        #     for chunk in resp.iter_content(chunk_size=8192):
-        #         if chunk:
-        #             f.write(chunk)
-        print(f"Saved audio to {resp}")
+        result = resp.json()
+        print("\nSynthesis Result:")
+        print(f"├── Status: {result['status']}")
+        print(f"├── Processing Time: {result['processing_time']:.2f}s")
+        print(f"├── Output Path: {result['out_path']}")
+        print("└── Metadata:")
+        for key, value in result['metadata'].items():
+            print(f"    └── {key}: {value}")
         return 0
     else:
         print(f"Error {resp.status_code}: {resp.text}", file=sys.stderr)

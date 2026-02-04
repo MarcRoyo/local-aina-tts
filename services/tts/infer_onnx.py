@@ -309,15 +309,37 @@ class SynthesizeRequest(BaseModel):
     temperature: float = 0.2
     length_scale: float = 0.89
 
+class SynthesizeResponse(BaseModel):
+    out_path: str
+    metadata: dict = {
+        "sample_rate": 22050,
+        "format": "wav"
+    }
+    status: str = "success"
+    processing_time: float
+
 @app.get("/health")
 async def health():
     return {"status": "ok"}
 
 @app.post("/synthesize")
 async def synthesize(req: SynthesizeRequest):
-    # call existing tts() which returns a filepath
-    out_path = tts(req.text, req.accent, req.spk_name, req.temperature, req.length_scale)
-    return out_path
+    start_time = perf_counter()
+    try:
+        out_path = tts(req.text, req.accent, req.spk_name, req.temperature, req.length_scale)
+        processing_time = perf_counter() - start_time
+        
+        return SynthesizeResponse(
+            out_path=out_path,
+            processing_time=processing_time
+        )
+    except Exception as e:
+        return SynthesizeResponse(
+            out_path="",
+            status="error",
+            metadata={"error": str(e)},
+            processing_time=perf_counter() - start_time
+        )
 
 def _run_api():
     uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")

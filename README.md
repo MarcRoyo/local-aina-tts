@@ -77,12 +77,16 @@ docker exec -it 04eaa0b6f23f bash
 
 docker compose ps
 
-docker cp "C:\root\code\github.com\MarcRoyo\local-aina-tts\services\tts\infer_onnx.py" 04eaa0b6f23f:/home/user/app/infer_onnx.py
+docker cp "C:\root\code\github.com\MarcRoyo\local-aina-tts\services\tts\infer_onnx.py" local-aina-tts-tts-1:/home/user/app/infer_onnx.py
 
-docker exec -u root 04eaa0b6f23f chown user:user /home/user/app/infer_onnx.py
+docker exec -u root local-aina-tts-tts-1 chown user:user /home/user/app/infer_onnx.py
 
 docker cp "C:\root\code\github.com\MarcRoyo\local-aina-tts\services\tts\requirements.txt" 04eaa0b6f23f:/home/user/app/requirements.txt
 
 docker exec -u user 04eaa0b6f23f pip install -r requirements.txt
 
-docker restart 04eaa0b6f23f
+docker restart local-aina-tts-tts-1
+
+# rebuild image and recreate container
+docker compose build tts
+docker compose up -d --force-recreate tts
